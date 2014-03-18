@@ -39,15 +39,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)include\FreeImage;$(ProjectDir)include\glew\include;$(ProjectDir)include\glfw3\include;$(ProjectDir)libs\TerryMathLib\include;$(ProjectDir)libs\SOIL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libs\FreeImage;$(ProjectDir)libs\glew\lib;$(ProjectDir)libs\glfw3;$(ProjectDir)libs\TerryMathLib\lib\Release;$(ProjectDir)libs\SOIL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)include\FreeImage;$(ProjectDir)include\glew\include;$(ProjectDir)include\glfw3\include;$(ProjectDir)libs\TerryMathLib\include;$(ProjectDir)libs\SOIL\include;$(ProjectDir)libs\tinyxml2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)libs\FreeImage;$(ProjectDir)libs\glew\lib;$(ProjectDir)libs\glfw3;$(ProjectDir)libs\TerryMathLib\lib\Debug;$(ProjectDir)libs\SOIL\lib;$(ProjectDir)libs\tinyxml2\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -55,7 +55,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>FreeImage.lib;glew32.lib;glfw3.lib;MathLibTerrehbyte.lib;SOIL.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;glew32.lib;glfw3dll.lib;MathLibTerrehbyte_d.lib;SOIL.lib;tinyxml2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,26 +76,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="resources\Charizard.png" />
+    <None Include="resources\Charizard.xml" />
     <None Include="resources\FragmentShader.glsl" />
+    <None Include="resources\NESish.png" />
+    <None Include="resources\NESish.xml" />
     <None Include="resources\VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="FontManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="TextFileReader.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>

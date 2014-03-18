@@ -2,12 +2,16 @@
 //File:              <Utilities.cpp>
 //Author:            <Hunter Bergerud>
 //Date Created:      <3/3/14>
-//Date Modified:     <3/3/14>
+//Date Modified:     <3/10/14>
 //Brief:             <Utilities Code>
 //////////////////////////////////////
 #include "Utilities.h"
 Matrix4 * Ortho;
-
+int g_gl_width = 1024;
+int g_gl_height = 720;
+double deltaTime = 0;
+int frames;
+double fps, elapsedTime;
 void Orthographic(float a_fLeft, float a_fRight, float a_fTop, float a_fBottom,
 	float a_fNear, float a_fFar, tbyte::Matrix4 * mat)
 {
@@ -87,78 +91,22 @@ void Perspective(float a_fUpFOV, float a_fAspectRatio, float a_fNear, float a_fF
 	mat->m_afArray[14] = a_fNear * a_fFar / (a_fNear - a_fFar);
 	mat->m_afArray[15] = 0;
 }
-GLuint LoadTexture(const char* a_szTexture, unsigned int a_uiFormat = GL_RGBA , 
-	unsigned int* a_uiWidth  = nullptr , 
-	unsigned int* a_uiHeight  = nullptr , unsigned int* a_uiBPP  = nullptr)
+//Get Delta Time
+double getDeltaTime()
 {
-	//Make a FIBITMAP pointer called pBitmap
-	FIBITMAP* pBitmap = nullptr;
-	//Check the file and shrink its type and load it
-	FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(a_szTexture, 0);
-	//If fif is not unknown and the fif support is itself
-	if(fif != FIF_UNKNOWN && FreeImage_FIFSupportsReading(fif)) 
+	return deltaTime;
+}
+//Reset Delta Time
+void resetDeltaTime()
+{
+	deltaTime =  glfwGetTime();
+	elapsedTime += deltaTime;
+	frames++;
+	if(elapsedTime > 0.25)
 	{
-		//Make pBitMap equal the fif and a_szTexture
-		pBitmap = FreeImage_Load(fif, a_szTexture);
+		fps = (double)frames/elapsedTime;
+		elapsedTime =0;
+		frames = 0;
 	}
-	//If pBitMap equals nullptr
-	if(pBitmap == nullptr) 
-	{
-		//Print out an error to the user the program failed to load the image
-		printf("Error: Failed to load image '%s'!\n", a_szTexture);
-		//Return 0
-		return 0;
-	}
-
-	//Get pBitMap's width and height
-	if(a_uiWidth != nullptr)
-		*a_uiWidth = FreeImage_GetWidth(pBitmap);
-	if(a_uiHeight != nullptr)
-		*a_uiHeight = FreeImage_GetHeight(pBitmap);
-
-	//Force the image to RGBA
-	unsigned int bpp = FreeImage_GetBPP(pBitmap);
-	//If a_uiBPP is not nullptr
-	if( a_uiBPP != nullptr )
-		//Make pointer a_uiBPP equal bpp divided by 8
-		*a_uiBPP = bpp/8;
-	//Make a FREE_IMAGE_COLOR_TYPE called fi_colourType equal the color type of pBitmap
-	FREE_IMAGE_COLOR_TYPE fi_colourType = FreeImage_GetColorType(pBitmap);
-	//If fi_colourType is not FIC_RGBALPHA
-	if(fi_colourType != FIC_RGBALPHA ) 
-	{
-		//Make a FIBITMAP pointer called ndib and equal it to pBitmap in 32 Bit format
-		FIBITMAP* ndib = FreeImage_ConvertTo32Bits(pBitmap);
-		//Upload pBitmap
-		FreeImage_Unload(pBitmap);
-		//Make pBitMap equal to ndib
-		pBitmap = ndib;
-		//Make bpp equal to pBitmap's BPP
-		bpp = FreeImage_GetBPP(pBitmap);
-		//Make fi_colourType equal the color type of pBitmap
-		fi_colourType = FreeImage_GetColorType(pBitmap);
-	}
-	//Get pixel data
-	BYTE* pData = FreeImage_GetBits(pBitmap);
-	//Try to determine data type of file (bytes/floats)
-	FREE_IMAGE_TYPE fit = FreeImage_GetImageType(pBitmap);
-	GLenum eType = (fit == FIT_RGBF || fit == FIT_FLOAT) ? GL_FLOAT:GL_UNSIGNED_BYTE;
-	//Create GL texture
-	GLuint textureID;
-	glGenTextures( 1, &textureID );
-	glBindTexture( GL_TEXTURE_2D, textureID );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 
-		FreeImage_GetWidth(pBitmap), 
-		FreeImage_GetHeight(pBitmap), 0, 
-		a_uiFormat, eType, pData);
-	// specify default filtering and wrapping
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	// unbind texture
-	glBindTexture( GL_TEXTURE_2D, 0 );
-	// delete data
-	FreeImage_Unload(pBitmap);
-	return textureID;
+	glfwSetTime(0);	
 }

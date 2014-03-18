@@ -2,12 +2,13 @@
 //File:              <Utilities.h>
 //Author:            <Hunter Bergerud>
 //Date Created:      <3/3/14>
-//Date Modified:     <3/3/14>
+//Date Modified:     <3/10/14>
 //Brief:             <Utilities Class>
 //////////////////////////////////////
 #pragma once
 #ifndef _UTILITIES_H_
 #define _UTILITIES_H_
+#include <GL\glew.h>
 #include <GLFW\glfw3.h>
 #include <FreeImage.h>
 #include <TerrehByteMath.h>
@@ -22,6 +23,11 @@
 #include <functional>
 using namespace tbyte;
 extern Matrix4 * Ortho;
+extern int g_gl_width;
+extern int g_gl_height;
+extern double deltaTime;
+extern double fps;
+extern double elapsedTime;
 //Make a struct called Vertex
 struct Vertex
 {
@@ -59,6 +65,8 @@ void Orthographic(float a_fLeft, float a_fRight, float a_fTop, float a_fBottom, 
 void Orthographic(float a_fWidth, float a_fHeight, float a_fNear, float a_fFar,tbyte::Matrix4 * mat);
 //Make a void function called Perspective with the required data
 void Perspective(float a_fUpFOV, float a_fAspectRatio, float a_fNear, float a_fFar,tbyte::Matrix4 * mat);
-//Make a GLuint function called LoadTexture with the required data
-GLuint LoadTexture(const char* a_szTexture, unsigned int a_uiFormat , unsigned int* a_uiWidth , unsigned int* a_uiHeight, unsigned int* a_uiBPP);
+//
+double getDeltaTime();
+//
+void resetDeltaTime();
 #endif _UTILITIES_H_

@@ -1,0 +1,4 @@
+<TextureAtlas imagePath="resources/Charizard.png" width="115" height="50">
+	<SubTexture name="slice03_2.png" x="57.5" y="0" width="57.5" height="50"/>
+	<SubTexture name="slice06_4.png" x="0" y="0" width="57.5" height="50"/>
+</TextureAtlas>

@@ -1,29 +1,17 @@
 //////////////////////////////////////////////////////////////////////////
 //	File:	TerrehByteMath.h
 //	Author:	Justin Loudermilk
-//	Date:	2/24/2014
+//	Date:	1/22/2014
 //	Brief:	Combined all the .h into a single file for ease of including
 //
 //////////////////////////////////////////////////////////////////////////
 #ifndef _TERREH_BYTE_MATH_H_
 #define _TERREH_BYTE_MATH_H_
-
-#ifdef DLL
-	#define DLLEXPORT __declspec(dllexport)
-#else
-	#define DLLEXPORT __declspec(dllimport)
-#endif
-
-// Vector Needs
-#define _USE_MATH_DEFINES
 #include <math.h>
-
-// General Mathematical Needs
-#include <map>
 
 namespace tbyte
 {
-	class DLLEXPORT Vector2
+	class Vector2
 	{
 	public:
 		Vector2();
@@ -37,6 +25,7 @@ namespace tbyte
 		float	m_fX;
 		float	m_fY;
 		
+
 		// Get Euler Angle Between Two Vectors
 		float EulerAngle(const Vector2 &a_Term);
 
@@ -72,7 +61,8 @@ namespace tbyte
 		Vector2	operator = (const Vector2 &a_Source);
 		bool	operator == (const Vector2 &a_Source);
 	};
-	class DLLEXPORT Vector3
+
+	class Vector3
 	{
 	public:
 		Vector3();
@@ -124,7 +114,8 @@ namespace tbyte
 		Vector3	operator = (const Vector3 &a_Source);
 		bool	operator == (const Vector3 &a_Source);
 	};
-	class DLLEXPORT Vector4
+
+	class Vector4
 	{
 	public:
 		Vector4();
@@ -180,7 +171,7 @@ namespace tbyte
 		Vector4	operator = (const Vector4 &a_Source);
 		bool	operator == (const Vector4 &a_Source);
 	};
-	class DLLEXPORT Matrix3
+	class Matrix3
 	{
 	public:
 
@@ -194,18 +185,18 @@ namespace tbyte
 		void Transpose();
 
 		// Returns a point that has been transformed by the Matrix3 caller
-		tbyte::Vector4 VectorTransform(const tbyte::Vector4 &a_Point);
-		tbyte::Vector3 VectorTransform(const tbyte::Vector3 &a_Point);
+		Vector4 VectorTransform(const Vector4 &a_Point);
+		Vector3 VectorTransform(const Vector3 &a_Point);
 
-		// Returns the Identity Matrix for 3x3
+		// Assigns & Returns the Identity Matrix for 3x3 to the caller
 		static Matrix3 IdentityMatrix();
 
 		// Returns the determinant of the matrix
 		float GetDeterminant();
 
 		// Returns a Vector4 that has been scaled by the Matrix caller
-		tbyte::Vector4 Scale(const tbyte::Vector4 &a_Vector);
-		tbyte::Vector3 Scale(const tbyte::Vector3 &a_Vector);
+		Vector4 Scale(const Vector4 &a_Vector);
+		Vector3 Scale(const Vector3 &a_Vector);
 
 		// Returns a Transform Matrix3 for rotation around the '_'-axis in radians
 		static Matrix3 MakeXRotationMatrix(float a_Radians);
@@ -231,7 +222,8 @@ namespace tbyte
 		Matrix3 operator = (const Matrix3 &a_Source);
 		bool	operator == (const Matrix3 &a_Term);
 	};
-	class DLLEXPORT Matrix4
+
+	class Matrix4
 	{
 	private:
 
@@ -246,9 +238,9 @@ namespace tbyte
 		void Transpose();
 
 		// Returns a point that has been transformed by the Matrix caller
-		tbyte::Vector4 PointTransform(const tbyte::Vector4 &a_Point);
+		Vector4 PointTransform(const Vector4 &a_Point);
 
-		// Returns the Identity Matrix for 4x4
+		// Assigns & Returns the Identity Matrix for 3x3 to the caller
 		static Matrix4 IdentityMatrix();
 
 		// Assigns & Returns the Orthographic Project Matrix that was created
@@ -268,8 +260,8 @@ namespace tbyte
 									float a_fNear);
 
 		// Returns a Vector4 that has been scaled by the Matrix caller
-		tbyte::Vector4 Scale(const tbyte::Vector4 &a_Vector);
-		tbyte::Vector3 Scale(const tbyte::Vector3 &a_Vector);
+		Vector4 Scale(const Vector4 &a_Vector);
+		Vector3 Scale(const Vector3 &a_Vector);
 
 		// Returns a Transform Matrix4 for rotation around the '_'-axis in radians
 		static Matrix4 MakeXRotationMatrix(float a_Radians);
@@ -277,8 +269,8 @@ namespace tbyte
 		static Matrix4 MakeZRotationMatrix(float a_Radians);
 
 		// Returns a Vector4 transformed by the Matrix caller
-		tbyte::Vector4 VectorTransform(const tbyte::Vector4 &a_Vector);
-		tbyte::Vector3 VectorTransform(const tbyte::Vector3 &a_Vector);
+		Vector4 VectorTransform(const Vector4 &a_Vector);
+		Vector3 VectorTransform(const Vector3 &a_Vector);
 
 		// Operators (explained by their parameters)
 		Matrix4	operator + (const Matrix4 &a_Addend);
@@ -302,22 +294,25 @@ namespace tbyte
 
 	};
 
-	/* General Mathematical Functions */
+	
+
 
 	// Linear Interpolation for Scalar Values
-	float DLLEXPORT LERP(float a_First, float a_Second, float a_InterpolationValue);
+	// http://msdn.microsoft.com/en-us/library/windows/desktop/bb509618%28v=vs.85%29.aspx
+	float LERP(float a_First, float a_Second, float a_InterpolationValue);
 
 	// Convert Deg to Radians
-	float DLLEXPORT DegreesToRadians(float a_fDegrees);
+	float DegreesToRadians(float a_fDegrees);
 
 	// Convert Radians to Deg
-	float DLLEXPORT RadiansToDegrees(float a_fRadians);
+	float RadiansToDegrees(float a_fRadians);
 
 	// Test Scalar Value if Power of Two
-	bool DLLEXPORT CheckPowerOfTwo(double a_dTestNumber);
+	bool CheckPowerOfTwo(double a_dTestNumber);
 
 	// Shift a Given Value to the Next Power of Two
-	double DLLEXPORT ShiftNextPowerOfTwo(double &a_dTestNumber);
+	double ShiftNextPowerOfTwo(double &a_dTestNumber);
+
 
 }
 #endif
